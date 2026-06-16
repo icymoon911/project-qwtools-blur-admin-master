@@ -241,6 +241,21 @@
         return messages.filter(function(m){
           return m.id == id;
         })[0];
+      },
+      // Locate a message strictly inside a label context.
+      // The demo dataset contains messages that share an id across different
+      // labels (e.g. '9391xdsff' lives in both 'draft' and 'sent'), so an
+      // id-only lookup is ambiguous and can resolve to the wrong record.
+      // Scoping by (label, id) makes the lookup deterministic: it returns the
+      // single matching message, or undefined when the id is not present in the
+      // requested label (unknown id, or a record that no longer belongs to the
+      // current category). Ambiguous matches are treated as "not found" rather
+      // than guessing the first hit.
+      getMessageByLabelAndId : function(label, id){
+        var matches = messages.filter(function(m){
+          return m.id == id && m.labels.indexOf(label) != -1;
+        });
+        return matches.length === 1 ? matches[0] : undefined;
       }
     }
 

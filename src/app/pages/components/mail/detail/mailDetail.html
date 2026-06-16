@@ -9,6 +9,7 @@
           class="ion-chevron-left"></i>Back
       </button>
     </div>
+    <div ng-if="detailCtrl.mail">
     <div class="person-info row">
       <div class="col-lg-4 col-md-12  no-padding">
         <img ng-src="{{detailCtrl.mail.name.split(' ')[0] | profilePicture}}" class="human-picture">
@@ -74,9 +75,10 @@
       <button type="button" class="btn btn-with-icon"><i class="ion-android-remove-circle"></i>Spam</button>
       <button type="button" class="btn btn-with-icon"><i class="ion-android-delete"></i>Delete</button>
     </div>
+    </div>
 
-  </div>
-  <div ng-show="!detailCtrl.mail">
-    <h5 ng-class="text-center">Nothing to show</h5>
+    <div class="empty-detail" ng-if="!detailCtrl.mail">
+      <h5 class="text-center">Nothing to show</h5>
+    </div>
   </div>
 </div>
