@@ -2,17 +2,30 @@
   <input type="text" value="" class="form-control task-todo" placeholder="Task to do.." ng-keyup="addToDoItem($event)" ng-model="newTodoText"/>
   <i ng-click="addToDoItem('',true)" class="add-item-icon ion-plus-round"></i>
   <div class="box-shadow-border"></div>
-  <ul class="todo-list" ui-sortable ng-model="todoList">
-    <li ng-repeat="item in todoList" ng-if="!item.deleted" ng-init="activeItem=false"
-        ng-class="{checked: isChecked, active: activeItem}"
+
+  <div class="todo-toolbar">
+    <span class="todo-filters">
+      <span ng-click="setFilter('all')" ng-class="{'active-filter': filter === 'all'}">全部</span>
+      <span ng-click="setFilter('active')" ng-class="{'active-filter': filter === 'active'}">未完成</span>
+      <span ng-click="setFilter('completed')" ng-class="{'active-filter': filter === 'completed'}">已完成</span>
+    </span>
+    <span class="todo-remaining">{{ remainingCount() }} 项未完成</span>
+  </div>
+
+  <ul class="todo-list" ui-sortable="sortableOptions" ng-model="todoList">
+    <li ng-repeat="item in todoList" ng-show="isVisible(item)" ng-init="activeItem=false"
+        ng-class="{checked: item.done, done: item.done, active: activeItem}"
         ng-mouseenter="activeItem=true" ng-mouseleave="activeItem=false">
       <div class="blur-container"><div class="blur-box"></div></div>
       <i class="mark" style="background-color: {{::item.color}}"></i>
       <label class="todo-checkbox custom-checkbox custom-input-success">
-        <input type="checkbox" ng-model="isChecked">
+        <input type="checkbox" ng-model="item.done" ng-change="toggleDone()">
         <span class="cut-with-dots">{{ item.text }}</span>
       </label>
-      <i class="remove-todo ion-ios-close-empty" ng-click="item.deleted = true"></i>
+      <i class="remove-todo ion-ios-close-empty" ng-click="removeItem(item)"></i>
     </li>
   </ul>
+
+  <div class="todo-empty" ng-if="todoList.length === 0">暂无待办，输入内容后回车即可添加</div>
+  <div class="todo-empty" ng-if="todoList.length > 0 && visibleCount() === 0">当前筛选下没有待办</div>
 </div>

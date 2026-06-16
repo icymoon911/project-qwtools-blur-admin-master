@@ -188,3 +188,51 @@ label.todo-checkbox {
   }
 
 }
+
+/* --- todo card enhancements ------------------------------------------- */
+
+.todo-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0;
+  font-size: 12px;
+}
+
+.todo-filters > span {
+  cursor: pointer;
+  margin-right: 12px;
+  opacity: 0.55;
+  transition: opacity 0.15s ease-out;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &.active-filter {
+    opacity: 1;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+
+.todo-remaining {
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.todo-empty {
+  padding: 12px 2px;
+  opacity: 0.6;
+  font-size: 13px;
+}
+
+// Completed tasks are clearly de-emphasized so unfinished ones stand out.
+ul.todo-list li.done {
+  opacity: 0.8;
+
+  .cut-with-dots {
+    text-decoration: line-through;
+    opacity: 0.55;
+  }
+}
