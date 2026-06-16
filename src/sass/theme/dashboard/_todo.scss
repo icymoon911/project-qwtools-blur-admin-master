@@ -36,8 +36,13 @@ ul.todo-list {
     }
 
     &.checked {
-      .todo-text {
+      i.mark {
+        opacity: 0.35;
+      }
+      label.todo-checkbox > span {
         color: $default-text;
+        text-decoration: line-through;
+        opacity: 0.55;
       }
       &:before {
         background: $input-border !important;
@@ -171,7 +176,9 @@ label.todo-checkbox {
         }
       }
       &.checked {
+        opacity: 0.55;
         label.todo-checkbox > span {
+          text-decoration: line-through;
           &:before {
             content: '\f00c';
           }
@@ -187,4 +194,75 @@ label.todo-checkbox {
     margin-left: -22px;
   }
 
+  .todo-toolbar {
+    color: rgba(255, 255, 255, 0.7);
+    border-top-color: rgba(255, 255, 255, 0.12);
+    .todo-count strong {
+      color: #fff;
+    }
+    .todo-filters a,
+    .todo-clear {
+      color: rgba(255, 255, 255, 0.7);
+      &:hover {
+        color: #fff;
+      }
+      &.active {
+        color: #fff;
+      }
+    }
+  }
+
+  .todo-empty {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+}
+
+.todo-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba($input-border, 0.5);
+  font-size: 12px;
+  color: $help-text;
+
+  .todo-count strong {
+    color: $default-text;
+  }
+
+  .todo-filters a {
+    margin-left: 8px;
+    color: $help-text;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+      color: $default-text;
+    }
+    &.active {
+      color: $default-text;
+      font-weight: bold;
+    }
+  }
+
+  .todo-clear {
+    margin-left: 12px;
+    color: $help-text;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+      color: $default-text;
+      text-decoration: underline;
+    }
+  }
+}
+
+.todo-empty {
+  padding: 16px 4px;
+  text-align: center;
+  font-size: 13px;
+  font-style: italic;
+  color: $help-text;
 }

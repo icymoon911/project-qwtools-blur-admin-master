@@ -1,18 +1,35 @@
 <div class="task-todo-container" ng-class="{'transparent': transparent}">
-  <input type="text" value="" class="form-control task-todo" placeholder="Task to do.." ng-keyup="addToDoItem($event)" ng-model="newTodoText"/>
+  <input type="text" value="" class="form-control task-todo" placeholder="Task to do.." maxlength="200" ng-keyup="addToDoItem($event)" ng-model="newTodoText"/>
   <i ng-click="addToDoItem('',true)" class="add-item-icon ion-plus-round"></i>
   <div class="box-shadow-border"></div>
-  <ul class="todo-list" ui-sortable ng-model="todoList">
-    <li ng-repeat="item in todoList" ng-if="!item.deleted" ng-init="activeItem=false"
-        ng-class="{checked: isChecked, active: activeItem}"
+  <ul class="todo-list" ui-sortable="sortableOptions" ng-model="todoList">
+    <li ng-repeat="item in todoList | filter:todoFilter" ng-init="activeItem=false"
+        ng-class="{checked: item.done, active: activeItem}"
         ng-mouseenter="activeItem=true" ng-mouseleave="activeItem=false">
       <div class="blur-container"><div class="blur-box"></div></div>
       <i class="mark" style="background-color: {{::item.color}}"></i>
       <label class="todo-checkbox custom-checkbox custom-input-success">
-        <input type="checkbox" ng-model="isChecked">
+        <input type="checkbox" ng-model="item.done" ng-change="todoChanged()">
         <span class="cut-with-dots">{{ item.text }}</span>
       </label>
-      <i class="remove-todo ion-ios-close-empty" ng-click="item.deleted = true"></i>
+      <i class="remove-todo ion-ios-close-empty" ng-click="removeItem(item)"></i>
     </li>
   </ul>
+
+  <div class="todo-empty" ng-if="todoList.length === 0">
+    All clear &mdash; add your first task above.
+  </div>
+  <div class="todo-empty" ng-if="todoList.length > 0 && (todoList | filter:todoFilter).length === 0">
+    No {{ filter }} tasks right now.
+  </div>
+
+  <div class="todo-toolbar" ng-if="todoList.length > 0">
+    <span class="todo-count"><strong>{{ remainingCount() }}</strong> left</span>
+    <span class="todo-filters">
+      <a href="" ng-class="{active: filter === 'all'}" ng-click="setFilter('all')">All</a>
+      <a href="" ng-class="{active: filter === 'active'}" ng-click="setFilter('active')">Active</a>
+      <a href="" ng-class="{active: filter === 'done'}" ng-click="setFilter('done')">Done</a>
+    </span>
+    <a href="" class="todo-clear" ng-if="completedCount() > 0" ng-click="clearCompleted()">Clear done</a>
+  </div>
 </div>
