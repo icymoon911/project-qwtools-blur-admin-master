@@ -237,10 +237,18 @@
           return m.labels.indexOf(label) != -1;
         });
       },
-      getMessageById : function(id){
-        return messages.filter(function(m){
-          return m.id == id;
-        })[0];
+      // Locate a message strictly inside its category context. Matching by id alone is
+      // unsafe: the demo data contains different messages that share an id across labels
+      // (e.g. "9391xdsff" lives in both draft and sent), so an id-only lookup returns
+      // whichever copy happens to sort first and shows the wrong mail. Scoping by
+      // (label, id) disambiguates those records; refusing to return anything when the
+      // match is not unique (missing, foreign label, or ambiguous) prevents a
+      // half-broken detail page instead of relying on a coincidental hit.
+      getMessage : function(label, id){
+        var matches = messages.filter(function(m){
+          return m.id === id && m.labels.indexOf(label) !== -1;
+        });
+        return matches.length === 1 ? matches[0] : null;
       }
     }
 
